@@ -1,63 +1,81 @@
-import React from 'react';
+// src/pages/Dashboard/Dashboard.tsx
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Plus, Package, RefreshCw, Award, TrendingUp, Clock, CheckCircle } from 'lucide-react';
 import './Dashboard.css';
 
+interface Item {
+  _id: string;
+  title: string;
+  image?: string;
+  status: string;
+  views: number;
+  interested: number;
+  swappedWith?: string;
+}
+
+interface Swap {
+  _id: string;
+  type: string;
+  item?: { title: string };
+  points?: number;
+  partner?: { name: string };
+  date: string;
+  status: string;
+}
+
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-
-  const userItems = [
-    {
-      id: '1',
-      title: 'Summer Floral Dress',
-      image: 'https://images.pexels.com/photos/994517/pexels-photo-994517.jpeg?auto=compress&cs=tinysrgb&w=300',
-      status: 'active',
-      views: 24,
-      interested: 3
-    },
-    {
-      id: '2',
-      title: 'Vintage Leather Jacket',
-      image: 'https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=300',
-      status: 'swapped',
-      swappedWith: 'Designer Handbag'
-    }
-  ];
-
-  const recentSwaps = [
-    {
-      id: '1',
-      type: 'swap',
-      item: 'Blue Denim Jeans',
-      partner: 'Alex Chen',
-      date: '2 days ago',
-      status: 'completed'
-    },
-    {
-      id: '2',
-      type: 'redeem',
-      item: 'Silk Scarf',
-      points: 45,
-      date: '1 week ago',
-      status: 'completed'
-    },
-    {
-      id: '3',
-      type: 'swap',
-      item: 'Winter Coat',
-      partner: 'Sarah Kim',
-      date: '2 weeks ago',
-      status: 'pending'
-    }
-  ];
-
-  const stats = [
-    { label: 'Total Swaps', value: '12', icon: RefreshCw, color: '#48bb78' },
-    { label: 'Items Listed', value: '8', icon: Package, color: '#3182ce' },
+  const [userItems, setUserItems] = useState<Item[]>([]);
+  const [recentSwaps, setRecentSwaps] = useState<Swap[]>([]);
+  const [stats, setStats] = useState([
+    { label: 'Total Swaps', value: '0', icon: RefreshCw, color: '#48bb78' },
+    { label: 'Items Listed', value: '0', icon: Package, color: '#3182ce' },
     { label: 'Current Points', value: user?.points.toString() || '0', icon: Award, color: '#ed8936' },
-    { label: 'This Month', value: '5', icon: TrendingUp, color: '#9f7aea' }
-  ];
+    { label: 'This Month', value: '0', icon: TrendingUp, color: '#9f7aea' }
+  ]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/dashboard', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
+        const data = await response.json();
+
+        setUserItems(data.items);
+        setRecentSwaps(data.swaps);
+        setStats([
+          { label: 'Total Swaps', value: data.stats.totalSwaps.toString(), icon: RefreshCw, color: '#48bb78' },
+          { label: 'Items Listed', value: data.stats.itemsListed.toString(), icon: Package, color: '#3182ce' },
+          { label: 'Current Points', value: data.user.points.toString(), icon: Award, color: '#ed8936' },
+          { label: 'This Month', value: data.stats.thisMonth.toString(), icon: TrendingUp, color: '#9f7aea' }
+        ]);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchDashboardData();
+    }
+  }, [user]);
+
+  if (loading) {
+    return <div className="loading-spinner">Loading...</div>;
+  }
 
   return (
     <div className="dashboard fade-in">
@@ -97,7 +115,7 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="items-grid">
               {userItems.map(item => (
-                <div key={item.id} className="user-item-card">
+                <div key={item._id} className="user-item-card">
                   <div className="item-image">
                     <img src={item.image} alt={item.title} />
                     <div className={`status-badge ${item.status}`}>
@@ -128,7 +146,7 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="activity-list">
               {recentSwaps.map(swap => (
-                <div key={swap.id} className="activity-item">
+                <div key={swap._id} className="activity-item">
                   <div className="activity-icon">
                     {swap.type === 'swap' ? 
                       <RefreshCw size={16} /> : 
@@ -138,9 +156,9 @@ const Dashboard: React.FC = () => {
                   <div className="activity-content">
                     <div className="activity-main">
                       {swap.type === 'swap' ? (
-                        <span>Swapped <strong>{swap.item}</strong> with {swap.partner}</span>
+                        <span>Swapped <strong>{swap.item?.title}</strong> with {swap.partner?.name}</span>
                       ) : (
-                        <span>Redeemed <strong>{swap.item}</strong> for {swap.points} points</span>
+                        <span>Redeemed <strong>{swap.item?.title}</strong> for {swap.points} points</span>
                       )}
                     </div>
                     <div className="activity-meta">

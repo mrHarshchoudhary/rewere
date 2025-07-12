@@ -19,6 +19,12 @@ const SignupPage: React.FC = () => {
   const { signup } = useAuth();
   const navigate = useNavigate();
 
+  // Add this passwordRequirements array
+  const passwordRequirements = [
+    { text: 'At least 6 characters', met: formData.password.length >= 6 },
+    { text: 'Passwords match', met: formData.password === formData.confirmPassword && formData.confirmPassword !== '' }
+  ];
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -59,11 +65,6 @@ const SignupPage: React.FC = () => {
       setIsLoading(false);
     }
   };
-
-  const passwordRequirements = [
-    { text: 'At least 6 characters', met: formData.password.length >= 6 },
-    { text: 'Passwords match', met: formData.password === formData.confirmPassword && formData.confirmPassword !== '' }
-  ];
 
   return (
     <div className="signup-page fade-in">

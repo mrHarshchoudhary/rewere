@@ -24,7 +24,7 @@ const LoginPage: React.FC = () => {
       if (success) {
         navigate('/dashboard');
       } else {
-        setError('Invalid email or password. Try: demo@rewear.com / demo123 or admin@rewear.com / admin123');
+        setError('Invalid email or password');
       }
     } catch (err) {
       setError('Login failed. Please try again.');
