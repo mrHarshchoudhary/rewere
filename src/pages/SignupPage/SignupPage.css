@@ -1,0 +1,249 @@
+.signup-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f7fafc 0%, #e6fffa 100%);
+  padding: 40px 0;
+}
+
+.signup-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form-section {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.signup-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 8px;
+}
+
+.signup-header p {
+  color: #4a5568;
+  font-size: 16px;
+}
+
+.signup-form {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.password-toggle:hover {
+  color: #4a5568;
+}
+
+.password-requirements {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border-left: 4px solid #48bb78;
+}
+
+.password-requirements h4 {
+  color: #2d3748;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.password-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.password-requirements li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.password-requirements li.met {
+  color: #48bb78;
+}
+
+.password-requirements li.unmet {
+  color: #a0aec0;
+}
+
+.password-requirements li.met svg {
+  color: #48bb78;
+}
+
+.password-requirements li.unmet svg {
+  color: #a0aec0;
+}
+
+.signup-btn {
+  width: 100%;
+  justify-content: center;
+  font-size: 16px;
+  height: 48px;
+}
+
+.signup-footer {
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 24px;
+}
+
+.signup-footer p {
+  color: #4a5568;
+}
+
+.signup-footer a {
+  color: #48bb78;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-footer a:hover {
+  text-decoration: underline;
+}
+
+.welcome-bonus {
+  margin-top: 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, #e6fffa 0%, #f0fff4 100%);
+  border-radius: 8px;
+  border-left: 4px solid #48bb78;
+  text-align: center;
+}
+
+.welcome-bonus h4 {
+  color: #2d3748;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.welcome-bonus p {
+  font-size: 12px;
+  color: #4a5568;
+}
+
+.signup-image-section {
+  position: relative;
+  background: #48bb78;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 1;
+}
+
+.image-overlay h3 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.image-overlay p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .signup-container {
+    grid-template-columns: 1fr;
+    margin: 20px;
+  }
+
+  .signup-form-section {
+    padding: 32px 24px;
+  }
+
+  .signup-header h1 {
+    font-size: 28px;
+  }
+
+  .signup-image-section {
+    order: -1;
+    min-height: 200px;
+  }
+
+  .image-overlay h3 {
+    font-size: 24px;
+  }
+
+  .image-overlay p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-container {
+    margin: 10px;
+  }
+
+  .signup-form-section {
+    padding: 24px 20px;
+  }
+
+  .signup-header h1 {
+    font-size: 24px;
+  }
+}
